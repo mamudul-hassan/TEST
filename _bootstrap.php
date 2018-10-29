@@ -87,7 +87,7 @@ function doRequest($url, $method, $data = null, $headers = null) {
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     }
     $response = curl_exec($curl);
-    file_put_contents("php://stderr","response : ".$response. "!\n");     
+    file_put_contents("php://stderr"," Do Request response : ".$response. "!\n");     
     curl_close($curl);
 
     return $response;
@@ -163,9 +163,6 @@ file_put_contents("php://stderr","response : ".$response. "!\n");
     // output response
     outputJsonResponse($response);
     
-echo "hello world!" ;
-echo $path ;
-file_put_contents("php://stderr", "hello, this is a test!\n");
-    
+ 
     
 }
