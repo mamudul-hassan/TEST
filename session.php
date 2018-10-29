@@ -24,6 +24,8 @@ if (intercept('POST')) {
 
     proxyCall($path);
 }
+echo "hello world!" ;
+echo $path ;
 
 ?>
 
