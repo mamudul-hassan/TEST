@@ -17,22 +17,18 @@
  */
 
 include '_bootstrap.php';
-echo "hello world!" ;
-echo $path ;
-file_put_contents("php://stderr", "hello, this is a test!\n");
-$req_dump = print_r($_REQUEST, TRUE);
-$fp = fopen('request.log', 'a');
-fwrite($fp, $req_dump);
-fclose($fp);
+
+file_put_contents("php://stderr", "hello, this is a test 1 !\n");
 
 
 
 // proxy POST requests
 if (intercept('POST')) {
+    file_put_contents("php://stderr", "hello, this is a test 1 !\n");    
     $path = '/session';
-
+    file_put_contents("php://stderr", "hello, path !  ".$path"\n");     
     proxyCall($path);
-}
+    file_put_contents("php://stderr", "hello, proxyCall !  ".$path"\n");     }
 
 ?>
 
