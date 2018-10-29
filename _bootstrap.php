@@ -26,6 +26,9 @@ $apiVersion = getenv('GATEWAY_API_VERSION');
 
 // merchant id must be TEST
 $merchantIdPrefix = substr($merchantId, 0, 4);
+
+file_put_contents("php://stderr","merchantIdPrefix : ".$merchantIdPrefix. "!\n"); 
+
 if (strcasecmp($merchantIdPrefix, "test") != 0) {
     error(500, 'Only TEST merchant IDs should be used with this software');
 }
@@ -52,6 +55,8 @@ if (intval($apiVersion) < 39) {
 // build api endpoint url
 $gatewayUrl = "https://$prefix-gateway.mastercard.com/api/rest/version/$apiVersion/merchant/$merchantId";
 
+file_put_contents("php://stderr","gatewayUrl : ".$gatewayUrl. "!\n"); 
+
 // parse query string
 $query = array();
 parse_str($_SERVER['QUERY_STRING'], $query);
@@ -64,8 +69,10 @@ $headers = array(
 
 // construct page url
 $pageUrl = "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+file_put_contents("php://stderr","pageUrl : ".$pageUrl. "!\n"); 
 
 function intercept($method) {
+    
     return strcasecmp($_SERVER['REQUEST_METHOD'], $method) == 0;
 }
 
@@ -80,6 +87,7 @@ function doRequest($url, $method, $data = null, $headers = null) {
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     }
     $response = curl_exec($curl);
+    file_put_contents("php://stderr","response : ".$response. "!\n");     
     curl_close($curl);
 
     return $response;
@@ -114,7 +122,7 @@ function getJsonPayload() {
             error(400, 'Could not parse json payload');
         }
     }
-
+ file_put_contents("php://stderr","input : ".$input. "!\n");     
     return $input;
 }
 
@@ -123,7 +131,7 @@ function decodeResponse($response) {
     if (json_last_error() !== JSON_ERROR_NONE) {
         error(400, 'Could not decode json response from gateway');
     }
-
+file_put_contents("php://stderr","Decoded : ".$decoded. "!\n"); 
     return $decoded;
 }
 
@@ -148,10 +156,10 @@ function proxyCall($path) {
 
     // get json payload from request
     $payload = getJsonPayload();
-
+file_put_contents("php://stderr","payload : ".$input. "!\n"); 
     // proxy authenticated request
     $response = doRequest($gatewayUrl . $path, $_SERVER['REQUEST_METHOD'], $payload, $headers);
-
+file_put_contents("php://stderr","response : ".$response. "!\n"); 
     // output response
     outputJsonResponse($response);
     
