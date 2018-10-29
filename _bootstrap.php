@@ -77,8 +77,16 @@ function intercept($method) {
 }
 
 function doRequest($url, $method, $data = null, $headers = null) {
+    file_put_contents("php://stderr"," Do Request url : ".$url. "!\n");  
+    file_put_contents("php://stderr"," Do Request Method : ".$method. "!\n");  
+    file_put_contents("php://stderr"," Do Request Data : ".$data. "!\n");  
+    file_put_contents("php://stderr"," Do Request headers : ".$headers. "!\n");  
+    
+    
     $curl = curl_init($url);
+    file_put_contents("php://stderr"," Do Request curl : ".$curl. "!\n");  
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+    
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     if (!empty($data)) {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
