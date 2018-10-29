@@ -154,4 +154,10 @@ function proxyCall($path) {
 
     // output response
     outputJsonResponse($response);
+    
+echo "hello world!" ;
+echo $path ;
+file_put_contents("php://stderr", "hello, this is a test!\n");
+    
+    
 }
