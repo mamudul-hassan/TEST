@@ -63,7 +63,7 @@ Payload:
       }
     },
     "order": {
-    	"amount": "1.00",
+    	"amount": "2.00",
     	"currency": "USD"
     },
     "session": {
