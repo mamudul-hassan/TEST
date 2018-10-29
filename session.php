@@ -26,9 +26,9 @@ file_put_contents("php://stderr", "hello, this is a test 1 !\n");
 if (intercept('POST')) {
     file_put_contents("php://stderr", "hello, this is a test 1 !\n");    
     $path = '/session';
-    file_put_contents("php://stderr", "hello, path !  ".$path"\n");     
+    file_put_contents("php://stderr", "hello, path !  ".$path."\n");     
     proxyCall($path);
-    file_put_contents("php://stderr", "hello, proxyCall !  ".$path"\n");     }
+    file_put_contents("php://stderr", "hello, proxyCall !  ".$path."\n");     }
 
 ?>
 
