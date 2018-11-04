@@ -95,7 +95,16 @@ function doRequest($url, $method, $data = null, $headers = null) {
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     }
     $response = curl_exec($curl);
-    file_put_contents("php://stderr"," Do Request response : ".$response. "!\n");     
+    if (strlen($response) > 900) {
+    file_put_contents("php://stderr"," Do Request response line 1 : ". substr($response,0,700). "!\n");     
+	file_put_contents("php://stderr"," Do Request response line 2 : ". substr($response,701,1400). "!\n");     
+	file_put_contents("php://stderr"," Do Request response line 3 : ". substr($response,1401,2100). "!\n");     
+	file_put_contents("php://stderr"," Do Request response line 4 : ". substr($response,2101,2800). "!\n");     
+	file_put_contents("php://stderr"," Do Request response line 5 : ". substr($response,2801,3500). "!\n");     
+	file_put_contents("php://stderr"," Do Request response line 6 : ". substr($response,3501,4200). "!\n");     
+    } else {
+	file_put_contents("php://stderr"," Do Request response : ".$response. "!\n");     
+   }
     curl_close($curl);
 
     return $response;
