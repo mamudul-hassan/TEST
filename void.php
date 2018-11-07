@@ -21,7 +21,9 @@ if (intercept('PUT')) {
     $orderId = requiredQueryParam('order');
     $txnId = requiredQueryParam('transaction');
     $path = '/order/' . $orderId . '/transaction/' . $txnId;
+    file_put_contents("php://stderr",$path. "\n");
     proxyCall($path);
+   
 }
 ?>
 
@@ -36,27 +38,17 @@ if (intercept('PUT')) {
     </head>
     <body>
         <h1>Transaction API</h1>
-        <h3>PAY Operation</h3>
+        <h3>VOID Operation</h3>
         <h5>Sample Request</h5>
         <pre><code>PUT <?php echo htmlentities($pageUrl . '?order={orderId}&transaction={txnId}'); ?>
 
 Content-Type: application/json
 Payload:
 {
-    "apiOperation": "PAY",
-    "order": {
-    	"amount": "1.00",
-    	"currency": "USD"
-    },
-    "session": {
-    	"id": "SESSION0000000000000000000000"
-    },
-    "sourceOfFunds": {
-    	"type": "CARD"
-    },
+    "apiOperation": "VOID",
     "transaction": {
-    	"frequency": "SINGLE"
-    }
+    	"targetTransactionId": "fcc57437"
+    },
 }</code></pre>
 
         <h5>Response</h5>
