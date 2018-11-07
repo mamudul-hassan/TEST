@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 include '_bootstrap.php';
-file_put_contents("php://stderr", "hello, this is a test 1 !\n");
-// proxy POST requests
-if (intercept('POST')) {
-    file_put_contents("php://stderr", "hello, this is a test 1 !\n");    
-    $path = '/session';
-    file_put_contents("php://stderr", "hello, path !  ".$path."\n");     
+// proxy PUT requests
+if (intercept('PUT')) {
+    // build path
+    $orderId = requiredQueryParam('order');
+    $txnId = requiredQueryParam('transaction');
+    $path = '/order/' . $orderId . '/transaction/' . $txnId;
     proxyCall($path);
-    file_put_contents("php://stderr", "hello, proxyCall !  ".$path."\n");     }
+}
 ?>
 
 <html>
@@ -35,23 +35,46 @@ if (intercept('POST')) {
         </style>
     </head>
     <body>
-        <h1>Session API</h1>
-        <h3>Create Session Operation</h3>
+        <h1>Transaction API</h1>
+        <h3>PAY Operation</h3>
         <h5>Sample Request</h5>
-        <pre><code>POST <?php echo $pageUrl; ?></code></pre>
-        <h5>Sample Response</h5>
+        <pre><code>PUT <?php echo htmlentities($pageUrl . '?order={orderId}&transaction={txnId}'); ?>
+
+Content-Type: application/json
+Payload:
+{
+    "apiOperation": "PAY",
+    "order": {
+    	"amount": "1.00",
+    	"currency": "USD"
+    },
+    "session": {
+    	"id": "SESSION0000000000000000000000"
+    },
+    "sourceOfFunds": {
+    	"type": "CARD"
+    },
+    "transaction": {
+    	"frequency": "SINGLE"
+    }
+}</code></pre>
+
+        <h5>Response</h5>
         <pre><code>Content-Type: application/json
 Payload:
 {
     "apiVersion": "<?php echo $apiVersion; ?>",
     "gatewayResponse": {
+        "authorizationResponse": { ... },
+        "gatewayEntryPoint": "WEB_SERVICES_API",
         "merchant": "<?php echo $merchantId; ?>",
+        "order": { ... },
+        "response": { ... },
         "result": "SUCCESS",
-        "session": {
-            "id": "SESSION0000000000000000000000",
-            "updateStatus": "NO_UPDATE",
-            "version": "abcdef0123"
-        }
+        "sourceOfFunds": { ... },
+        "timeOfRecord": "2017-01-01T00:00:00.000Z",
+        "transaction": { ... },
+        "version": "<?php echo $apiVersion; ?>"
     }
 }</code></pre>
     </body>
